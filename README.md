@@ -59,7 +59,7 @@ A modern, secure banking application built with ASP.NET Core MVC, featuring a cl
 
 - .NET 6.0 SDK or later
 - Visual Studio 2022 or Visual Studio Code
-- SQL Server (LocalDB or Express)
+
 
 ### Installation
 
@@ -78,16 +78,7 @@ cd BankingApp
 dotnet restore
 ```
 
-4. Update the connection string in `appsettings.json`
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=BankingApp;Trusted_Connection=True;"
-  }
-}
-```
-
-5. Run the application
+4. Run the application
 ```bash
 dotnet run
 ```
