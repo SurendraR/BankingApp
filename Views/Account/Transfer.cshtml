@@ -1,0 +1,69 @@
+@model List<BankingApp.Models.Account>
+@{
+    ViewData["Title"] = "Transfer Money";
+    var beneficiaries = ViewBag.Beneficiaries as List<BankingApp.Models.Beneficiary>;
+}
+
+<div class="container mt-4">
+    <h2>Transfer Money</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Transfer" method="post">
+                <div class="form-group mb-3">
+                    <label for="fromAccountNumber">From Account</label>
+                    <select class="form-control" id="fromAccountNumber" name="fromAccountNumber" required>
+                        <option value="">Select Account</option>
+                        @foreach (var account in Model)
+                        {
+                            <option value="@account.AccountNumber">@account.AccountNumber - $@account.Balance.ToString("N2")</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="toAccountNumber">To Account Number</label>
+                    <select class="form-control" id="toAccountNumber" name="toAccountNumber" required>
+                        <option value="">Select Beneficiary or Enter Account Number</option>
+                        @if (beneficiaries != null)
+                        {
+                            foreach (var beneficiary in beneficiaries)
+                            {
+                                <option value="@beneficiary.AccountNumber">@beneficiary.Name - @beneficiary.AccountNumber</option>
+                            }
+                        }
+                    </select>
+                    <small class="form-text text-muted">You can also enter a new account number manually</small>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="amount">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0.01" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Transfer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('toAccountNumber').addEventListener('change', function() {
+            if (this.value === '') {
+                this.setAttribute('type', 'text');
+            } else {
+                this.setAttribute('type', 'hidden');
+            }
+        });
+    </script>
+} 

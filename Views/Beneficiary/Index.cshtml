@@ -1,0 +1,48 @@
+@model List<BankingApp.Models.Beneficiary>
+
+@{
+    ViewData["Title"] = "My Beneficiaries";
+}
+
+<div class="container mt-4">
+    <h2>My Beneficiaries</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Beneficiary</a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Account Number</th>
+                    <th>Bank Name</th>
+                    <th>IFSC</th>
+                    <th>Added Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var beneficiary in Model)
+                {
+                    <tr>
+                        <td>@beneficiary.Name</td>
+                        <td>@beneficiary.AccountNumber</td>
+                        <td>@beneficiary.BankName</td>
+                        <td>@beneficiary.IFSC</td>
+                        <td>@beneficiary.AddedDate.ToString("MM/dd/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div> 

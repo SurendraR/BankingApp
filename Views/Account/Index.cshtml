@@ -1,0 +1,61 @@
+@model List<BankingApp.Models.Account>
+
+@{
+    ViewData["Title"] = "My Accounts";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Accounts</h2>
+        <div>
+            <a href="@Url.Action("Transfer", "Account")" class="btn btn-primary">
+                <i class="fas fa-exchange-alt"></i> Transfer Money
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row">
+        @foreach (var account in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="account-card">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="mb-1">@account.AccountType Account</h5>
+                            <p class="account-number mb-0">@account.AccountNumber</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="balance">$@account.Balance.ToString("N2")</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="btn-group w-100">
+                            <a href="@Url.Action("Transfer", "Account")" class="btn btn-light">
+                                <i class="fas fa-exchange-alt"></i> Transfer
+                            </a>
+                            <a href="@Url.Action("Transactions", "Account", new { accountNumber = account.AccountNumber })" class="btn btn-light">
+                                <i class="fas fa-history"></i> Transactions
+                            </a>
+                            <a href="@Url.Action("Statement", "Account", new { accountNumber = account.AccountNumber })" class="btn btn-light">
+                                <i class="fas fa-file-alt"></i> Statement
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+} 

@@ -1,0 +1,50 @@
+@model BankingApp.Models.Beneficiary
+
+@{
+    ViewData["Title"] = "Add Beneficiary";
+}
+
+<div class="container mt-4">
+    <h2>Add New Beneficiary</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AccountNumber" class="control-label"></label>
+                    <input asp-for="AccountNumber" class="form-control" />
+                    <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="BankName" class="control-label"></label>
+                    <input asp-for="BankName" class="form-control" />
+                    <span asp-validation-for="BankName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IFSC" class="control-label"></label>
+                    <input asp-for="IFSC" class="form-control" />
+                    <span asp-validation-for="IFSC" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Add Beneficiary" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

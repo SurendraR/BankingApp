@@ -1,0 +1,71 @@
+@model List<BankingApp.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Transaction History";
+    var accountNumber = ViewData["AccountNumber"] as string;
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Transaction History</h2>
+        <div>
+            <a href="@Url.Action("Statement", "Account", new { accountNumber = accountNumber })" class="btn btn-primary">
+                <i class="fas fa-file-alt"></i> View Statement
+            </a>
+            <a href="@Url.Action("Index", "Account")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Accounts
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th class="text-end">Amount</th>
+                            <th>To Account</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model)
+                        {
+                            <tr class="@(transaction.TransactionType == "Debit" ? "transaction-debit" : "transaction-credit")">
+                                <td>@transaction.TransactionDate.ToString("MM/dd/yyyy HH:mm")</td>
+                                <td>
+                                    <span class="badge @(transaction.TransactionType == "Debit" ? "bg-danger" : "bg-success")">
+                                        @transaction.TransactionType
+                                    </span>
+                                </td>
+                                <td>@transaction.Description</td>
+                                <td class="text-end @(transaction.TransactionType == "Debit" ? "text-danger" : "text-success")">
+                                    @(transaction.TransactionType == "Debit" ? "-" : "+")$@Math.Abs(transaction.Amount).ToString("N2")
+                                </td>
+                                <td>@transaction.ToAccountNumber</td>
+                                <td>@transaction.Status</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+} 

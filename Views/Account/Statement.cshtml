@@ -1,0 +1,68 @@
+@model List<BankingApp.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Account Statement";
+    var accountNumber = ViewBag.AccountNumber;
+    var startDate = ViewBag.StartDate;
+    var endDate = ViewBag.EndDate;
+}
+
+<div class="container mt-4">
+    <h2>Account Statement - @accountNumber</h2>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form method="get" class="form-inline">
+                <input type="hidden" name="accountNumber" value="@accountNumber" />
+                
+                <div class="form-group mb-2">
+                    <label for="startDate" class="mr-2">From:</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="@(startDate?.ToString("yyyy-MM-dd"))" />
+                </div>
+                
+                <div class="form-group mb-2">
+                    <label for="endDate" class="mr-2">To:</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" value="@(endDate?.ToString("yyyy-MM-dd"))" />
+                </div>
+                
+                <button type="submit" class="btn btn-primary mb-2">Filter</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    decimal runningBalance = 0;
+                    foreach (var transaction in Model)
+                    {
+                        runningBalance += transaction.TransactionType == "Debit" ? -transaction.Amount : transaction.Amount;
+                        <tr>
+                            <td>@transaction.TransactionDate.ToString("MM/dd/yyyy HH:mm")</td>
+                            <td>@transaction.TransactionType</td>
+                            <td>@transaction.Description</td>
+                            <td>@(transaction.TransactionType == "Debit" ? transaction.Amount.ToString("N2") : "-")</td>
+                            <td>@(transaction.TransactionType == "Credit" ? transaction.Amount.ToString("N2") : "-")</td>
+                            <td>@runningBalance.ToString("N2")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Back to Accounts</a>
+    </div>
+</div> 
